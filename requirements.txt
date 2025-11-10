@@ -1,0 +1,8 @@
+langchain
+langchain-community
+Jinja2
+requests
+python-dotenv
+openai
+bs4
+selenium

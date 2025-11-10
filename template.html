@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ topic }} - 主题摘要</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metadata {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #4a5568;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .entities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .entity-category {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .entity-category h3 {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .entity-list {
+            list-style: none;
+        }
+
+        .entity-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .entity-list li:last-child {
+            border-bottom: none;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #667eea;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-event {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .articles-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .article-card {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            transition: transform 0.2s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-title a {
+            color: #2d3748;
+            text-decoration: none;
+        }
+
+        .article-title a:hover {
+            color: #667eea;
+        }
+
+        .article-meta {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .publish-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .date-icon {
+            font-size: 0.8rem;
+        }
+
+        .no-date {
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        .article-content {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+
+        .read-more:hover {
+            background: #5a67d8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .entities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ topic }}</h1>
+            <div class="metadata">
+                自动生成的主题摘要 | 生成时间: {{ generated_date }}
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>📋 主题摘要</h2>
+            <div class="summary-content">{{ summary }}</div>
+        </section>
+
+        <section class="section">
+            <h2>🔑 关键实体</h2>
+            <div class="entities-grid">
+                <div class="entity-category">
+                    <h3>🏢 组织机构</h3>
+                    <ul class="entity-list">
+                        {% for org in entities.organizations %}
+                        <li>{{ org }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="entity-category">
+                    <h3>👥 相关人物</h3>
+                    <ul class="entity-list">
+                        {% for person in entities.people %}
+                        <li>{{ person }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="entity-category">
+                    <h3>📝 关键术语</h3>
+                    <ul class="entity-list">
+                        {% for term in entities.key_terms %}
+                        <li>{{ term }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>⏰ 重大进展时间线</h2>
+            <div class="timeline">
+                {% for item in timeline %}
+                <div class="timeline-item">
+                    <div class="timeline-date">{{ item.date }}</div>
+                    <div class="timeline-event">{{ item.event }}</div>
+                    <div class="timeline-description">{{ item.description }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📰 信息来源</h2>
+            <div class="articles-grid">
+                {% for article in news_articles %}
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            {% if article.publish_date %}
+                                {{ article.publish_date }}
+                            {% else %}
+                                <span class="no-date">日期未知</span>
+                            {% endif %}
+                        </span>
+                        <span>来源: {{ article.source }}</span>
+                    </div>
+                    <div class="article-content">
+                        {{ article.content[:200] }}{% if article.content|length > 200 %}...{% endif %}
+                    </div>
+                    <a href="{{ article.url }}" class="read-more" target="_blank">阅读原文</a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <footer>
+            <p>本页面由自动化新闻摘要系统生成 | 数据来源: 多个新闻媒体</p>
+        </footer>
+    </div>
+</body>
+</html>
