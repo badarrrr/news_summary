@@ -6,10 +6,17 @@ from typing import List, Dict, Any
 from jinja2 import Template
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from langchain.prompts import PromptTemplate
-from crawl_cnn import get_cnn_news_with_content
-from langchain.schema import BaseOutputParser
+# from langchain.prompts import PromptTemplate
+# from langchain.schema import BaseOutputParser
+
+# 上面识别不到的可以用下面这种
+from langchain_core.prompts import PromptTemplate  # PromptTemplate
+from langchain_core.output_parsers.base import BaseOutputParser  # BaseOutputParser
 from prompts import summary_prompt
+
+
+from crawl_cnn import get_cnn_news_with_content
+from crawl_apnews import get_ap_news_with_content
 
 
 class SummaryParser(BaseOutputParser):
@@ -51,15 +58,16 @@ class NewsSummaryPipeline:
 
     def fetch_news_data(self, topic: str) -> List[Dict]:
         """
-        获取新闻数据
-        这里返回模拟数据
+        从多个源获取新闻数据
         """
-        # 模拟从多个来源获取的新闻数据
-        print('开始从CNN获取数据')
         cnn_news = get_cnn_news_with_content(topic)
         print(f'成功从CNN获取{len(cnn_news)}条数据')
 
-        return cnn_news
+        ap_news = get_ap_news_with_content(topic)
+        print(f'成功从Ap News获取{len(ap_news)}条数据')
+
+        all_news = cnn_news + ap_news
+        return all_news
 
     def deduplicate_news(self, news_list: List[Dict]) -> List[Dict]:
         """
@@ -148,7 +156,13 @@ class NewsSummaryPipeline:
 
 
 if __name__ == "__main__":
-    # 加载环境变量
-    load_dotenv()
-    pipeline = NewsSummaryPipeline(topic="league of legends")
-    pipeline.run_pipeline("test1.html")
+    # 加载环境变量（我在我开发平台里加了环境变量所以这里注释了）
+    # load_dotenv()
+    api_key = os.getenv("DASHSCOPE_API_KEY")
+    if api_key:
+        print("成功获取API Key!")
+    else:
+        print("未找到API Key，请检查环境变量设置")
+
+    pipeline = NewsSummaryPipeline(topic="Trump")
+    pipeline.run_pipeline("lwx_test2.html")

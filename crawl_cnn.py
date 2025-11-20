@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import time
 
+EDGE_DRIVER_PATH = r"D:\edgedriver_win32\msedgedriver.exe"
+max_articles_count = 20
 
 def get_article_content(url):
     """爬取单个新闻文章的详细内容"""
@@ -16,7 +18,7 @@ def get_article_content(url):
     edge_options.add_argument(
         "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0")
 
-    service = Service('/Users/jeremy/Downloads/edgedriver_mac64_m1/msedgedriver')
+    service = Service(EDGE_DRIVER_PATH)
     driver = webdriver.Edge(service=service, options=edge_options)
 
     try:
@@ -75,7 +77,7 @@ def get_news_list_selenium(topic, size):
     edge_options.add_argument(
         "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0")
 
-    service = Service('/Users/jeremy/Downloads/edgedriver_mac64_m1/msedgedriver')
+    service = Service(EDGE_DRIVER_PATH)
     driver = webdriver.Edge(service=service, options=edge_options)
 
     try:
@@ -116,7 +118,7 @@ def get_news_list_selenium(topic, size):
         driver.quit()
 
 
-def get_cnn_news_with_content(topic, max_articles=5):
+def get_cnn_news_with_content(topic, max_articles=max_articles_count):
     """获取新闻列表并爬取每个新闻的详细内容"""
     # 获取新闻列表
     news_list = get_news_list_selenium(topic, max_articles)
@@ -149,22 +151,22 @@ def get_cnn_news_with_content(topic, max_articles=5):
 
     return detailed_news
 
-
-# 测试
-if __name__ == "__main__":
-    topic = "OpenAI"
-    detailed_news = get_cnn_news_with_content(topic, max_articles=10)  # 限制为3篇文章进行测试
-
-    if detailed_news:
-        print(f"\n成功爬取 {len(detailed_news)} 篇文章的详细内容:")
-        print("=" * 80)
-
-        for i, news in enumerate(detailed_news, 1):
-            print(f"\n{i}. 标题: {news['title']}")
-            print(f"   发布时间: {news['publish_date']}")
-            print(f"   链接: {news['url']}")
-            print(f"   内容预览: {news['content']}...")
-            print("-" * 80)
-    else:
-        print("未能获取到任何新闻内容")
-    # get_article_content('https://edition.cnn.com/2025/11/03/business/david-solomon-goldman-sachs-ai')
+#
+# # 测试
+# if __name__ == "__main__":
+#     topic = "OpenAI"
+#     detailed_news = get_cnn_news_with_content(topic, max_articles=10)  # 限制为3篇文章进行测试
+#
+#     if detailed_news:
+#         print(f"\n成功爬取 {len(detailed_news)} 篇文章的详细内容:")
+#         print("=" * 80)
+#
+#         for i, news in enumerate(detailed_news, 1):
+#             print(f"\n{i}. 标题: {news['title']}")
+#             print(f"   发布时间: {news['publish_date']}")
+#             print(f"   链接: {news['url']}")
+#             print(f"   内容预览: {news['content']}...")
+#             print("-" * 80)
+#     else:
+#         print("未能获取到任何新闻内容")
+#     # get_article_content('https://edition.cnn.com/2025/11/03/business/david-solomon-goldman-sachs-ai')
