@@ -278,6 +278,15 @@
                 </div>
 
                 <div class="entity-category">
+                    <h3>📍 Locations</h3>
+                    <ul class="entity-list">
+                        {% for locs in entities.locations %}
+                        <li>{{ locs }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="entity-category">
                     <h3>📝 Key Terms</h3>
                     <ul class="entity-list">
                         {% for term in entities.key_terms %}
@@ -307,7 +316,7 @@
                 {% for article in news_articles %}
                 <div class="article-card">
                     <h3 class="article-title">
-                        <a href="{{ article.url }}" target="_blank">{{ article.title }}</a>
+                        <a href="{{ article.url[0] }}" target="_blank">{{ article.title }}</a>
                     </h3>
                     <div class="article-meta">
                         <span class="publish-date">
@@ -323,7 +332,9 @@
                     <div class="article-content">
                         {{ article.content[:200] }}{% if article.content|length > 200 %}...{% endif %}
                     </div>
-                    <a href="{{ article.url }}" class="read-more" target="_blank">Read Full Article</a>
+                    {% for url in article.urls %}
+                        <a href="{{ url }}" class="read-more" target="_blank">Read Full Article{% if article.urls|length > 1 %} ({{ loop.index }}){% endif %}</a>
+                    {% endfor %}
                 </div>
                 {% endfor %}
             </div>

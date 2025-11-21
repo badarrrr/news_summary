@@ -1,5 +1,5 @@
-# crawl_reuters.py
-
+# crawl_bbc.py
+import traceback
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.edge.options import Options
@@ -13,7 +13,7 @@ import time
 EDGE_DRIVER_PATH = r'D:\edgedriver_win32\msedgedriver.exe'
 
 def get_article_content(url):
-    """爬取Reuters单篇新闻内容"""
+    """爬取 BBC News 单篇新闻内容"""
     edge_options = Options()
     edge_options.add_argument("--headless")
     edge_options.add_argument(
@@ -27,23 +27,25 @@ def get_article_content(url):
     try:
         print(f"正在爬取文章: {url}")
         driver.get(url)
+
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
-        content_parts = []
 
-        paragraphs = soup.find_all('p', class_='article-body__content__text')
+        # 提取正文
+        content_parts = []
+        paragraphs = soup.select('div[data-component="text-block"] p.ssrcss-1q0x1qg-Paragraph')
         for p in paragraphs:
             text = p.get_text(strip=True)
             if text:
                 content_parts.append(text)
-
         full_content = ' '.join(content_parts)
 
+        # 提取发布时间
         publish_date = ''
-        date_tag = soup.find('meta', attrs={'name': 'article:published_time'})
-        if date_tag and date_tag.has_attr('content'):
-            dt = datetime.fromisoformat(date_tag['content'].replace('Z', '+00:00'))
+        time_tag = soup.select_one('time[data-testid="timestamp"]')
+        if time_tag and time_tag.has_attr('datetime'):
+            dt = datetime.fromisoformat(time_tag['datetime'].replace('Z', '+00:00'))
             publish_date = dt.strftime("%Y-%m-%d")
 
         return {'content': full_content, 'publish_date': publish_date}
@@ -56,60 +58,73 @@ def get_article_content(url):
 
 
 def get_news_list_selenium(topic, size):
-    """获取Reuters新闻列表"""
+    """获取 BBC News 新闻列表"""
     edge_options = Options()
     edge_options.add_argument("--headless")
     edge_options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0"
-    )
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0")
 
     service = Service(EDGE_DRIVER_PATH)
     driver = webdriver.Edge(service=service, options=edge_options)
 
     try:
-        search_url = f'https://www.reuters.com/site-search/?query={topic}'
+        search_url = f'https://www.bbc.co.uk/search?q={topic}'
         driver.get(search_url)
+
+        # 等待页面初步渲染
         WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'search-result-title'))
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div[data-testid="default-promo"]'))
         )
 
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        # # 滚动加载更多新闻（简单实现，滚动 2 次，可根据需要调整）
+        for _ in range(2):
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
+
+        soup = BeautifulSoup(driver.page_source, "html.parser")
+
+        # extract news_list
+        items = soup.select("li")
         news_list = []
 
-        headlines = soup.find_all('h3', class_='search-result-title')
-        for h in headlines[:size]:
-            link_tag = h.find('a')
-            if link_tag:
-                title = link_tag.get_text(strip=True)
-                url = link_tag['href']
-                if url and not url.startswith('http'):
-                    url = 'https://www.reuters.com' + url
+        for it in items:
+            if len(news_list) >= size:  # 达到上限就停止
+                break
+            link_tag = it.select_one("a.ssrcss-163mj99-PromoLink")
+            if not link_tag:
+                continue
 
-                if title and len(title) > 10:
-                    news_list.append({'title': title, 'url': url})
+            url = link_tag["href"]
+            title_tag = link_tag.select_one("p.ssrcss-1b1mki6-PromoHeadline")
+            title = title_tag.get_text(strip=True) if title_tag else ""
+
+            news_list.append({
+                "title": title,
+                "url": url
+            })
 
         return news_list
 
     except Exception as e:
         print(f"搜索新闻列表时出错: {e}")
+        traceback.print_exc()
         return []
     finally:
         driver.quit()
 
 
-def get_reuters_news_with_content(topic, max_articles=5):
-    """获取Reuters新闻列表并爬取详细内容"""
+def get_bbc_news_with_content(topic, max_articles=100):
+    """获取 BBC News 新闻列表并爬取详细内容"""
     news_list = get_news_list_selenium(topic, max_articles)
     if not news_list:
-        print("Reuters未找到相关新闻")
+        print("BBC News 未找到相关新闻")
         return []
 
-    print(f"Reuters找到 {len(news_list)} 条新闻，开始爬取详细内容...")
+    print(f"BBC News 找到 {len(news_list)} 条新闻，开始爬取详细内容...")
     detailed_news = []
 
     for i, news in enumerate(news_list, 1):
-        print(f"Reuters进度: {i}/{min(len(news_list), max_articles)}")
+        print(f" 进度: {i}/{min(len(news_list), max_articles)}")
         article_content = get_article_content(news['url'])
         if article_content['content']:
             detailed_news.append({
@@ -117,7 +132,7 @@ def get_reuters_news_with_content(topic, max_articles=5):
                 'url': news['url'],
                 'content': article_content['content'],
                 'publish_date': article_content['publish_date'],
-                'source': 'Reuters',
+                'source': 'BBC News',
             })
         time.sleep(3)
 
@@ -125,7 +140,7 @@ def get_reuters_news_with_content(topic, max_articles=5):
 
 if __name__ == "__main__":
     topic = "OpenAI"
-    detailed_news = get_reuters_news_with_content(topic, max_articles=3)  # 限制为3篇文章进行测试
+    detailed_news = get_bbc_news_with_content(topic, max_articles=3)  # 限制为3篇文章进行测试
 
     if detailed_news:
         print(f"\n成功爬取 {len(detailed_news)} 篇文章的详细内容:")

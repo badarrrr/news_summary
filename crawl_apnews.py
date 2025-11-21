@@ -10,9 +10,8 @@ from datetime import datetime
 import time
 
 EDGE_DRIVER_PATH = r"D:\edgedriver_win32\msedgedriver.exe"
-max_articles_count = 20
 
-def get_ap_news_list_selenium(topic, max_articles=max_articles_count):
+def get_ap_news_list_selenium(topic, size):
     edge_options = Options()
     edge_options.add_argument("--headless")
     edge_options.add_argument(
@@ -43,7 +42,7 @@ def get_ap_news_list_selenium(topic, max_articles=max_articles_count):
 
         cards = soup.find_all('div', class_='PagePromo-title')
         for card in cards:
-            if len(news_list) >= max_articles:  # 达到上限就停止
+            if len(news_list) >= size:  # 达到上限就停止
                 break
             a_tag = card.find('a')
             if a_tag:
@@ -89,7 +88,7 @@ def get_ap_article_content(url):
         return {"content": "", "publish_date": ""}
 
 
-def get_ap_news_with_content(topic, max_articles=max_articles_count):
+def get_ap_news_with_content(topic, max_articles=100):
     news_list = get_ap_news_list_selenium(topic, max_articles)
 
     if not news_list:
@@ -100,7 +99,7 @@ def get_ap_news_with_content(topic, max_articles=max_articles_count):
 
     detailed = []
     for i, news in enumerate(news_list, 1):
-        print(f"AP News 进度: {i}/{len(news_list)}")
+        print(f"AP News 进度: {i}/{min(len(news_list), max_articles)}")
         article = get_ap_article_content(news["url"])
 
         if article["content"]:

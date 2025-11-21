@@ -4,6 +4,8 @@ import re
 from datetime import datetime
 from typing import List, Dict, Any
 from jinja2 import Template
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 # from langchain.prompts import PromptTemplate
@@ -17,7 +19,7 @@ from prompts import summary_prompt
 
 from crawl_cnn import get_cnn_news_with_content
 from crawl_apnews import get_ap_news_with_content
-
+from crawl_bbc import get_bbc_news_with_content
 
 class SummaryParser(BaseOutputParser):
 
@@ -60,29 +62,64 @@ class NewsSummaryPipeline:
         """
         从多个源获取新闻数据
         """
+        # 各个方法内默认 max_articles=100
         cnn_news = get_cnn_news_with_content(topic)
         print(f'成功从CNN获取{len(cnn_news)}条数据')
 
         ap_news = get_ap_news_with_content(topic)
         print(f'成功从Ap News获取{len(ap_news)}条数据')
 
-        all_news = cnn_news + ap_news
+        bbc_news = get_bbc_news_with_content(topic)
+        print(f'成功从BBC News获取{len(ap_news)}条数据')
+
+        all_news = cnn_news + ap_news + bbc_news
         return all_news
 
     def deduplicate_news(self, news_list: List[Dict]) -> List[Dict]:
         """
-        去重和合并相似新闻
+        使用TF-IDF + 余弦相似度去重和合并相似新闻
         """
-        # 简单的基于标题相似度的去重
-        unique_news = []
-        seen_titles = set()
+        if not news_list:
+            return []
 
-        for news in news_list:
-            # 简化的去重逻辑 - 实际应用中可以使用更复杂的相似度检测
-            title_key = news['title'][:50]  # 取前50个字符作为关键标识
-            if title_key not in seen_titles:
-                seen_titles.add(title_key)
-                unique_news.append(news)
+        # 将标题和内容预览合并作为文本表示
+        texts = [news['title'] + ' ' + news.get('content', '') for news in news_list]
+
+        # 计算TF-IDF向量
+        vectorizer = TfidfVectorizer(stop_words='english')
+        tfidf_matrix = vectorizer.fit_transform(texts)
+
+        # 计算余弦相似度矩阵
+        similarity_matrix = cosine_similarity(tfidf_matrix)
+
+        # 去重逻辑
+        unique_news = []
+        seen_indices = set()
+        threshold = 0.85  # 高阈值，确保只有高度相似的新闻才被去重
+
+        for i, news in enumerate(news_list):
+            if i in seen_indices:
+                continue
+
+            # 将当前新闻标记为已保留
+            seen_indices.add(i)
+
+            # 初始化 urls 列表，默认包含当前新闻的 url
+            news['urls'] = [news['url']]
+
+            # 找出相似新闻
+            for j in range(i + 1, len(news_list)):
+                if j not in seen_indices and similarity_matrix[i, j] >= threshold:
+                    # 将相似新闻的 url 加入当前新闻的 urls 列表（其余内容只保留第一个新闻，只是url加上其他的）
+                    news['urls'].append(news_list[j]['url'])
+
+                    # 合并 source，如果不重复才加
+                    if news_list[j]['source'] not in news['source']:
+                        news['source'] += ', ' + news_list[j]['source']
+
+                    seen_indices.add(j)
+
+            unique_news.append(news)
 
         return unique_news
 
@@ -120,7 +157,7 @@ class NewsSummaryPipeline:
             entities=processed_data['entities'],
             timeline=processed_data['timeline'],
             news_articles=news_list,
-            generated_date=datetime.now().strftime("%Y年%m月%d日 %H:%M")
+            generated_date=datetime.now().strftime("%B %d, %Y %H:%M")
         )
 
         return html_content
@@ -164,5 +201,5 @@ if __name__ == "__main__":
     else:
         print("未找到API Key，请检查环境变量设置")
 
-    pipeline = NewsSummaryPipeline(topic="Trump")
-    pipeline.run_pipeline("lwx_test2.html")
+    pipeline = NewsSummaryPipeline(topic="Tesla")
+    pipeline.run_pipeline("lwx_test1.html")
