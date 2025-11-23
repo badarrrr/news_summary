@@ -27,7 +27,7 @@ class SummaryParser(BaseOutputParser):
         try:
             data = json.loads(text)
 
-            # 验证必需字段
+            # validate required fields
             required_fields = ['topic', 'entities', 'summary', 'timeline']
             for field in required_fields:
                 if field not in data:
@@ -47,9 +47,8 @@ class SummaryParser(BaseOutputParser):
 class NewsSummaryPipeline:
     def __init__(self, topic: str = None):
         """
-        初始化新闻摘要管道
-        在实际应用中，这里会集成AskNews API
-        这里使用模拟数据作为演示
+        Initialize the news-summary pipeline.
+        In production you would plug in AskNews API; here we demo with crawled data.
         """
         self.llm = ChatOpenAI(
             api_key=os.getenv("DASHSCOPE_API_KEY"),
@@ -60,60 +59,61 @@ class NewsSummaryPipeline:
 
     def fetch_news_data(self, topic: str) -> List[Dict]:
         """
-        从多个源获取新闻数据
+        Fetch news data from multiple sources.
         """
-        # 各个方法内默认 max_articles=100
+        # each method defaults to max_articles=100 internally
         cnn_news = get_cnn_news_with_content(topic)
-        print(f'成功从CNN获取{len(cnn_news)}条数据')
+        print(f'Successfully obtained {len(cnn_news)} items from CNN')
 
         ap_news = get_ap_news_with_content(topic)
-        print(f'成功从Ap News获取{len(ap_news)}条数据')
+        print(f'Successfully obtained {len(ap_news)} items from AP News')
 
         bbc_news = get_bbc_news_with_content(topic)
-        print(f'成功从BBC News获取{len(ap_news)}条数据')
+        print(f'Successfully obtained {len(bbc_news)} items from BBC News')
 
         all_news = cnn_news + ap_news + bbc_news
         return all_news
 
     def deduplicate_news(self, news_list: List[Dict]) -> List[Dict]:
         """
-        使用TF-IDF + 余弦相似度去重和合并相似新闻
+        Deduplicate & merge similar news using TF-IDF + cosine similarity.
         """
         if not news_list:
             return []
 
-        # 将标题和内容预览合并作为文本表示
+        # merge title + body as text representation
         texts = [news['title'] + ' ' + news.get('content', '') for news in news_list]
 
-        # 计算TF-IDF向量
+        # compute TF-IDF vectors
         vectorizer = TfidfVectorizer(stop_words='english')
         tfidf_matrix = vectorizer.fit_transform(texts)
 
-        # 计算余弦相似度矩阵
+        # cosine similarity matrix
         similarity_matrix = cosine_similarity(tfidf_matrix)
 
-        # 去重逻辑
+        # deduplication logic
         unique_news = []
         seen_indices = set()
-        threshold = 0.85  # 高阈值，确保只有高度相似的新闻才被去重
+        threshold = 0.85  # high threshold for strict dedup
 
         for i, news in enumerate(news_list):
             if i in seen_indices:
                 continue
 
-            # 将当前新闻标记为已保留
+            # Mark the current news as saved
             seen_indices.add(i)
 
-            # 初始化 urls 列表，默认包含当前新闻的 url
+            # init url list. By default it contains the url of the current news.
             news['urls'] = [news['url']]
 
-            # 找出相似新闻
+            # find similar items
             for j in range(i + 1, len(news_list)):
                 if j not in seen_indices and similarity_matrix[i, j] >= threshold:
-                    # 将相似新闻的 url 加入当前新闻的 urls 列表（其余内容只保留第一个新闻，只是url加上其他的）
+                    # Add the urls of news that are similar to the current news to the url list.
+                    # The content of the similar news are discarded.
                     news['urls'].append(news_list[j]['url'])
 
-                    # 合并 source，如果不重复才加
+                    # merge source if not duplicate
                     if news_list[j]['source'] not in news['source']:
                         news['source'] += ', ' + news_list[j]['source']
 
@@ -125,7 +125,7 @@ class NewsSummaryPipeline:
 
     def extract_entities_and_summary(self, news_list: List[Dict]) -> Dict[str, Any]:
         """
-        提取实体和生成摘要
+        Extract entities and generate summary.
         """
         prompt = PromptTemplate(
             input_variables=["key_event", "news_list"],
@@ -144,7 +144,7 @@ class NewsSummaryPipeline:
 
     def generate_html(self, processed_data: Dict, news_list: List[Dict]) -> str:
         """
-        生成HTML页面
+        Generate HTML page.
         """
         with open('template.html', 'r', encoding='utf-8') as f:
             template_str = f.read()
@@ -164,42 +164,42 @@ class NewsSummaryPipeline:
 
     def run_pipeline(self, output_file: str = "news_summary.html") -> str:
         """
-        运行完整的数据管道
+        Run the complete data pipeline.
         """
-        print(f"开始处理主题: {self.topic}")
+        print(f"Starting topic: {self.topic}")
 
-        # 1. 获取新闻数据
-        print("获取新闻数据...")
+        # 1. fetch news data
+        print("Fetching news data...")
         news_data = self.fetch_news_data(self.topic)
 
-        # 2. 去重处理
-        print("去重处理...")
+        # 2. deduplication
+        print("Deduplicating...")
         unique_news = self.deduplicate_news(news_data)
 
-        # 3. 提取实体和生成摘要
-        print("生成摘要和提取实体...")
+        # 3. extract entities & summary
+        print("Generating summary & entities...")
         processed_data = self.extract_entities_and_summary(unique_news)
 
-        # 4. 生成HTML
-        print("生成HTML页面...")
+        # 4. generate HTML
+        print("Generating HTML page...")
         html_content = self.generate_html(processed_data, unique_news)
 
-        # 5. 保存文件
+        # 5. save file
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(html_content)
 
-        print(f"处理完成！输出文件: {output_file}")
+        print(f"Pipeline finished! Output file: {output_file}")
         return output_file
 
 
 if __name__ == "__main__":
-    # 加载环境变量（我在我开发平台里加了环境变量所以这里注释了）
+    # load env vars (commented because I set them in IDE)
     # load_dotenv()
     api_key = os.getenv("DASHSCOPE_API_KEY")
     if api_key:
-        print("成功获取API Key!")
+        print("API Key loaded successfully!")
     else:
-        print("未找到API Key，请检查环境变量设置")
+        print("API Key not found, please check environment variables")
 
     pipeline = NewsSummaryPipeline(topic="Tesla")
     pipeline.run_pipeline("lwx_test1.html")

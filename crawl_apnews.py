@@ -21,28 +21,28 @@ def get_ap_news_list_selenium(topic, size):
     driver = webdriver.Edge(service=service, options=edge_options)
 
     try:
-        # 打开搜索页面
+        # open search page
         url = f'https://apnews.com/search?q={topic}'
         driver.get(url)
 
-        # 等待页面初步渲染
+        # wait for initial render
         WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.TAG_NAME, "body"))
         )
 
-        # 滚动加载更多新闻（简单实现，滚动 2 次，可根据需要调整）
+        # scroll to load more news (simple: scroll twice, adjustable)
         for _ in range(2):
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)  # 等待内容加载
+            time.sleep(2)  # wait for content load
 
-        # 获取页面源码
+        # get page source
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
         news_list = []
 
         cards = soup.find_all('div', class_='PagePromo-title')
         for card in cards:
-            if len(news_list) >= size:  # 达到上限就停止
+            if len(news_list) >= size:  # stop when limit reached
                 break
             a_tag = card.find('a')
             if a_tag:
@@ -63,15 +63,15 @@ def get_ap_article_content(url):
     }
 
     try:
-        print(f"正在爬取文章: {url}")
+        print(f"Crawling article: {url}")
         resp = requests.get(url, headers=headers, timeout=10)
         soup = BeautifulSoup(resp.text, "html.parser")
 
-        # 正文
+        # body content
         paragraphs = soup.select("div.RichTextStoryBody p")
         content = " ".join(p.get_text(strip=True) for p in paragraphs)
 
-        # 时间
+        # publish time
         publish_date = ""
         t = soup.find("meta", attrs={"property": "article:published_time"})
         if t and t.get("content"):
@@ -84,7 +84,7 @@ def get_ap_article_content(url):
         }
 
     except Exception as e:
-        print("正文解析失败：", e)
+        print("Article parsing failed:", e)
         return {"content": "", "publish_date": ""}
 
 
@@ -92,14 +92,14 @@ def get_ap_news_with_content(topic, max_articles=100):
     news_list = get_ap_news_list_selenium(topic, max_articles)
 
     if not news_list:
-        print("AP News 未找到相关新闻")
+        print("AP News found no relevant news")
         return []
 
-    print(f"AP News 找到 {len(news_list)} 条新闻，开始爬取正文...")
+    print(f"AP News found {len(news_list)} articles, starting to crawl body...")
 
     detailed = []
     for i, news in enumerate(news_list, 1):
-        print(f"AP News 进度: {i}/{min(len(news_list), max_articles)}")
+        print(f"AP News progress: {i}/{min(len(news_list), max_articles)}")
         article = get_ap_article_content(news["url"])
 
         if article["content"]:
