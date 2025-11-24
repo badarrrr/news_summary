@@ -13,7 +13,7 @@ import time
 EDGE_DRIVER_PATH = r'D:\edgedriver_win32\msedgedriver.exe'
 
 def get_article_content(url):
-    """爬取 BBC News 单篇新闻内容"""
+    """Crawl single BBC News article content"""
     edge_options = Options()
     edge_options.add_argument("--headless")
     edge_options.add_argument(
@@ -25,14 +25,14 @@ def get_article_content(url):
     driver = webdriver.Edge(service=service, options=edge_options)
 
     try:
-        print(f"正在爬取文章: {url}")
+        print(f"Crawling article: {url}")
         driver.get(url)
 
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-        # 提取正文
+        # extract body
         content_parts = []
         paragraphs = soup.select('div[data-component="text-block"] p.ssrcss-1q0x1qg-Paragraph')
         for p in paragraphs:
@@ -41,7 +41,7 @@ def get_article_content(url):
                 content_parts.append(text)
         full_content = ' '.join(content_parts)
 
-        # 提取发布时间
+        # extract publish time
         publish_date = ''
         time_tag = soup.select_one('time[data-testid="timestamp"]')
         if time_tag and time_tag.has_attr('datetime'):
@@ -51,14 +51,14 @@ def get_article_content(url):
         return {'content': full_content, 'publish_date': publish_date}
 
     except Exception as e:
-        print(f"爬取文章内容时出错 {url}: {e}")
+        print(f"Error crawling article {url}: {e}")
         return {'content': '', 'publish_date': ''}
     finally:
         driver.quit()
 
 
 def get_news_list_selenium(topic, size):
-    """获取 BBC News 新闻列表"""
+    """Fetch BBC News list"""
     edge_options = Options()
     edge_options.add_argument("--headless")
     edge_options.add_argument(
@@ -71,24 +71,24 @@ def get_news_list_selenium(topic, size):
         search_url = f'https://www.bbc.co.uk/search?q={topic}'
         driver.get(search_url)
 
-        # 等待页面初步渲染
+        # Wait for the initial rendering finished.
         WebDriverWait(driver, 20).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div[data-testid="default-promo"]'))
         )
 
-        # # 滚动加载更多新闻（简单实现，滚动 2 次，可根据需要调整）
+        # scroll to load more news (simple: scroll twice)
         for _ in range(2):
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(2)
 
         soup = BeautifulSoup(driver.page_source, "html.parser")
 
-        # extract news_list
+        # extract news list
         items = soup.select("li")
         news_list = []
 
         for it in items:
-            if len(news_list) >= size:  # 达到上限就停止
+            if len(news_list) >= size:  # Stop when upper bound is reached.
                 break
             link_tag = it.select_one("a.ssrcss-163mj99-PromoLink")
             if not link_tag:
@@ -106,7 +106,7 @@ def get_news_list_selenium(topic, size):
         return news_list
 
     except Exception as e:
-        print(f"搜索新闻列表时出错: {e}")
+        print(f"Error searching news list: {e}")
         traceback.print_exc()
         return []
     finally:
@@ -114,17 +114,17 @@ def get_news_list_selenium(topic, size):
 
 
 def get_bbc_news_with_content(topic, max_articles=100):
-    """获取 BBC News 新闻列表并爬取详细内容"""
+    """Fetch BBC News list and crawl full content"""
     news_list = get_news_list_selenium(topic, max_articles)
     if not news_list:
-        print("BBC News 未找到相关新闻")
+        print("BBC News found no relevant news")
         return []
 
-    print(f"BBC News 找到 {len(news_list)} 条新闻，开始爬取详细内容...")
+    print(f"BBC News found {len(news_list)} articles, crawling full content...")
     detailed_news = []
 
     for i, news in enumerate(news_list, 1):
-        print(f" 进度: {i}/{min(len(news_list), max_articles)}")
+        print(f" Progress: {i}/{min(len(news_list), max_articles)}")
         article_content = get_article_content(news['url'])
         if article_content['content']:
             detailed_news.append({
@@ -140,17 +140,17 @@ def get_bbc_news_with_content(topic, max_articles=100):
 
 if __name__ == "__main__":
     topic = "OpenAI"
-    detailed_news = get_bbc_news_with_content(topic, max_articles=3)  # 限制为3篇文章进行测试
+    detailed_news = get_bbc_news_with_content(topic, max_articles=3)  # limit to 3 articles for test
 
     if detailed_news:
-        print(f"\n成功爬取 {len(detailed_news)} 篇文章的详细内容:")
+        print(f"\nSuccessfully crawled {len(detailed_news)} articles:")
         print("=" * 80)
 
         for i, news in enumerate(detailed_news, 1):
-            print(f"\n{i}. 标题: {news['title']}")
-            print(f"   发布时间: {news['publish_date']}")
-            print(f"   链接: {news['url']}")
-            print(f"   内容预览: {news['content']}...")
+            print(f"\n{i}. Title: {news['title']}")
+            print(f"   Publish Date: {news['publish_date']}")
+            print(f"   URL: {news['url']}")
+            print(f"   Content Preview: {news['content']}...")
             print("-" * 80)
     else:
-        print("未能获取到任何新闻内容")
+        print("No articles retrieved")
