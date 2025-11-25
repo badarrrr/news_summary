@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zootopia 2 Release - Topic Summary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metadata {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #4a5568;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .entities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .entity-category {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .entity-category h3 {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .entity-list {
+            list-style: none;
+        }
+
+        .entity-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .entity-list li:last-child {
+            border-bottom: none;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #667eea;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-event {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .articles-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .article-card {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            transition: transform 0.2s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-title a {
+            color: #2d3748;
+            text-decoration: none;
+        }
+
+        .article-title a:hover {
+            color: #667eea;
+        }
+
+        .article-meta {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .publish-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .date-icon {
+            font-size: 0.8rem;
+        }
+
+        .no-date {
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        .article-content {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+
+        .read-more:hover {
+            background: #5a67d8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .entities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Zootopia 2 Release</h1>
+            <div class="metadata">
+                Automatically Generated Topic Summary | Generated: November 24, 2025 18:58
+            </div>
+        </header>
+
+        <section class="section">
+            <h2>📋 Topic Summary</h2>
+            <div class="summary-content">The release of 'Zootopia 2' has emerged as a major cultural and box office event in late 2025, marking a significant moment for animated films and the broader theatrical landscape. 
+
+1. 'Zootopia 2' is scheduled for theatrical release on November 26, 2025, under Disney, continuing the adventures of Judy Hopps and Nick Wilde in the animal metropolis.
+
+2. The film is anticipated to drive strong audience turnout during the Thanksgiving holiday period, following the success of other major releases like 'Wicked: For Good,' which earned $226 million globally in its opening weekend.
+
+3. 'Zootopia 2' is eligible for the 98th Academy Awards in the animated feature category, having completed a qualifying theatrical run in key U.S. cities including New York, Los Angeles, and San Francisco.
+
+4. Industry analysts project that 'Zootopia 2,' alongside 'Avatar: Fire and Ash,' could help push the annual domestic box office toward the $9 billion post-pandemic target after a sluggish fall season.
+
+The film’s release underscores the continued importance of family-friendly sequels in revitalizing cinema attendance and shaping year-end box office performance.</div>
+        </section>
+
+        <section class="section">
+            <h2>🔑 Key Entities</h2>
+            <div class="entities-grid">
+                <div class="entity-category">
+                    <h3>🏢 Organizations</h3>
+                    <ul class="entity-list">
+                        
+                        <li>Disney</li>
+                        
+                        <li>Smithsonian Institution</li>
+                        
+                        <li>National Zoo</li>
+                        
+                        <li>Netflix</li>
+                        
+                        <li>Universal Pictures</li>
+                        
+                        <li>Comscore</li>
+                        
+                        <li>AMC Theaters</li>
+                        
+                        <li>Walt Disney Co.</li>
+                        
+                        <li>20th Century Studios</li>
+                        
+                        <li>Neon</li>
+                        
+                        <li>Aalborg Zoo</li>
+                        
+                        <li>Tiergarten Nürnberg Zoo</li>
+                        
+                    </ul>
+                </div>
+
+                <div class="entity-category">
+                    <h3>👥 People</h3>
+                    <ul class="entity-list">
+                        
+                        <li>Judy Hopps</li>
+                        
+                        <li>Nick Wilde</li>
+                        
+                        <li>Ginnifer Goodwin</li>
+                        
+                        <li>Jason Bateman</li>
+                        
+                        <li>Jim Orr</li>
+                        
+                        <li>Paul Dergarabedian</li>
+                        
+                        <li>Rich Gelfond</li>
+                        
+                        <li>Jon M. Chu</li>
+                        
+                        <li>Cynthia Erivo</li>
+                        
+                        <li>Ariana Grande</li>
+                        
+                        <li>Donald Glover</li>
+                        
+                        <li>Morgan Geyser</li>
+                        
+                        <li>Anissa Weier</li>
+                        
+                        <li>Payton Leutner</li>
+                        
+                        <li>Patrick Mahomes</li>
+                        
+                        <li>Harrison Butker</li>
+                        
+                        <li>Kareem Hunt</li>
+                        
+                        <li>Rashee Rice</li>
+                        
+                        <li>Andy Reid</li>
+                        
+                        <li>Daniel Craig</li>
+                        
+                        <li>James Sweeney</li>
+                        
+                        <li>Margot Robbie</li>
+                        
+                        <li>Colin Farrell</li>
+                        
+                        <li>Matthew McConaughey</li>
+                        
+                        <li>America Ferrera</li>
+                        
+                        <li>Leonardo DiCaprio</li>
+                        
+                        <li>Teyana Taylor</li>
+                        
+                        <li>Scarlett Johansson</li>
+                        
+                        <li>June Squibb</li>
+                        
+                        <li>Dwayne Johnson</li>
+                        
+                        <li>Benny Safdie</li>
+                        
+                        <li>Daniel Day-Lewis</li>
+                        
+                        <li>Ronan Day-Lewis</li>
+                        
+                        <li>Channing Tatum</li>
+                        
+                        <li>Bill Condon</li>
+                        
+                        <li>Diego Luna</li>
+                        
+                        <li>Jennifer Lopez</li>
+                        
+                        <li>Jared Leto</li>
+                        
+                        <li>Jeff Bridges</li>
+                        
+                        <li>Julia Roberts</li>
+                        
+                        <li>Ayo Edebiri</li>
+                        
+                        <li>Rose Byrne</li>
+                        
+                        <li>Mary Bronstein</li>
+                        
+                        <li>Harris Dickinson</li>
+                        
+                        <li>Keira Knightley</li>
+                        
+                        <li>Emilia Jones</li>
+                        
+                        <li>Scoot McNairy</li>
+                        
+                        <li>Mohamad Ali Elyasmehr</li>
+                        
+                        <li>Majid Panahi</li>
+                        
+                        <li>Hadis Pakbaten</li>
+                        
+                        <li>Oscar Isaac</li>
+                        
+                        <li>Jacob Elordi</li>
+                        
+                        <li>Aziz Ansari</li>
+                        
+                        <li>Keanu Reeves</li>
+                        
+                        <li>Seth Rogen</li>
+                        
+                        <li>Ethan Hawke</li>
+                        
+                        <li>Andrew Scott</li>
+                        
+                        <li>Richard Linklater</li>
+                        
+                        <li>Kelly Reichardt</li>
+                        
+                        <li>Josh O'Connor</li>
+                        
+                        <li>Ben Stiller</li>
+                        
+                        <li>Jerry Stiller</li>
+                        
+                        <li>Anne Meara</li>
+                        
+                        <li>Jeremy Allen White</li>
+                        
+                        <li>Bruce Springsteen</li>
+                        
+                        <li>Jesse Plemons</li>
+                        
+                        <li>Emma Stone</li>
+                        
+                        <li>Aidan Delbis</li>
+                        
+                        <li>Yorgos Lanthimos</li>
+                        
+                        <li>Jack Black</li>
+                        
+                        <li>Paul Rudd</li>
+                        
+                        <li>Sydney Sweeney</li>
+                        
+                        <li>Amanda Seyfried</li>
+                        
+                        <li>Hugh Jackman</li>
+                        
+                        <li>Kate Hudson</li>
+                        
+                        <li>Craig Brewer</li>
+                        
+                        <li>Ralph Fiennes</li>
+                        
+                        <li>Timothée Chalamet</li>
+                        
+                        <li>Gwyneth Paltrow</li>
+                        
+                        <li>Naya Desir-Johnson</li>
+                        
+                        <li>Sarah Rector</li>
+                        
+                        <li>Peter Hujar</li>
+                        
+                        <li>Rebecca Hall</li>
+                        
+                        <li>Linda Rosenkrantz</li>
+                        
+                        <li>Osgood Perkins</li>
+                        
+                        <li>Tatiana Maslany</li>
+                        
+                        <li>Rossif Sutherland</li>
+                        
+                        <li>Jesse Eisenberg</li>
+                        
+                        <li>Woody Harrelson</li>
+                        
+                        <li>Morgan Freeman</li>
+                        
+                        <li>Glen Powell</li>
+                        
+                        <li>Edgar Wright</li>
+                        
+                        <li>George Clooney</li>
+                        
+                        <li>Adam Sandler</li>
+                        
+                        <li>Noah Baumbach</li>
+                        
+                        <li>Miles Teller</li>
+                        
+                        <li>Elizabeth Olsen</li>
+                        
+                        <li>Callum Turner</li>
+                        
+                        <li>Shih-Ching Tsou</li>
+                        
+                        <li>Sean Baker</li>
+                        
+                        <li>Óliver Laxe</li>
+                        
+                        <li>Sergi López</li>
+                        
+                        <li>Bruno Núñez Arjona</li>
+                        
+                        <li>Wagner Moura</li>
+                        
+                        <li>Kleber Mendonça Filho</li>
+                        
+                        <li>Paul Mescal</li>
+                        
+                        <li>Jessie Buckley</li>
+                        
+                        <li>Chloé Zhao</li>
+                        
+                        <li>Maggie O’Farrell</li>
+                        
+                        <li>William Shakespeare</li>
+                        
+                        <li>Agnes Shakespeare</li>
+                        
+                        <li>James L. Brooks</li>
+                        
+                        <li>Emma Mackey</li>
+                        
+                        <li>Jamie Lee Curtis</li>
+                        
+                        <li>Rami Malek</li>
+                        
+                        <li>Russell Crowe</li>
+                        
+                        <li>Stellan Skarsgård</li>
+                        
+                        <li>Renate Reinsve</li>
+                        
+                        <li>Inga Ibsdotter Lilleaas</li>
+                        
+                        <li>Elle Fanning</li>
+                        
+                        <li>Dan Trachtenberg</li>
+                        
+                        <li>Dimitrius Schuster-Koloamatangi</li>
+                        
+                    </ul>
+                </div>
+
+                <div class="entity-category">
+                    <h3>📍 Locations</h3>
+                    <ul class="entity-list">
+                        
+                        <li>Washington, DC</li>
+                        
+                        <li>Virginia</li>
+                        
+                        <li>Peru</li>
+                        
+                        <li>New York City</li>
+                        
+                        <li>Denmark</li>
+                        
+                        <li>Aalborg</li>
+                        
+                        <li>Germany</li>
+                        
+                        <li>Nuremberg</li>
+                        
+                        <li>Paris</li>
+                        
+                        <li>China</li>
+                        
+                        <li>Spain</li>
+                        
+                        <li>Norway</li>
+                        
+                        <li>Brazil</li>
+                        
+                        <li>France</li>
+                        
+                        <li>Tunisia</li>
+                        
+                        <li>United Kingdom</li>
+                        
+                        <li>Geneva</li>
+                        
+                        <li>Wisconsin</li>
+                        
+                        <li>Milwaukee</li>
+                        
+                        <li>Louisiana</li>
+                        
+                        <li>Houston</li>
+                        
+                        <li>Los Angeles</li>
+                        
+                        <li>San Francisco</li>
+                        
+                        <li>Oklahoma</li>
+                        
+                        <li>Macao</li>
+                        
+                        <li>Colombian rainforest</li>
+                        
+                        <li>Taipei</li>
+                        
+                        <li>Moroccan desert</li>
+                        
+                        <li>Yorkshire</li>
+                        
+                        <li>Oklahoma land allotment</li>
+                        
+                    </ul>
+                </div>
+
+                <div class="entity-category">
+                    <h3>📝 Key Terms</h3>
+                    <ul class="entity-list">
+                        
+                        <li>Zootopia 2</li>
+                        
+                        <li>box office</li>
+                        
+                        <li>animated feature film</li>
+                        
+                        <li>Oscars eligibility</li>
+                        
+                        <li>theatrical release</li>
+                        
+                        <li>Thanksgiving holiday</li>
+                        
+                        <li>sequel</li>
+                        
+                        <li>cultural event</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>⏰ Major Developments Timeline</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2025-08-25</div>
+                    <div class="timeline-event">Fall Movie Guide Announcement</div>
+                    <div class="timeline-description">AP News publishes a fall movie calendar confirming 'Zootopia 2' as an upcoming theatrical release by Disney, set for November 26, 2025.</div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2025-11-09</div>
+                    <div class="timeline-event">Box Office Recovery Signs</div>
+                    <div class="timeline-description">'Predator: Badlands' tops the box office with $40 million domestically, signaling potential momentum ahead of major holiday releases including 'Zootopia 2'.</div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2025-11-16</div>
+                    <div class="timeline-event">Holiday Blockbuster Build-Up</div>
+                    <div class="timeline-description">Industry analysts highlight 'Zootopia 2' as a key upcoming release expected to boost theater traffic during the Thanksgiving frame.</div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2025-11-21</div>
+                    <div class="timeline-event">Oscars Eligibility Confirmed</div>
+                    <div class="timeline-description">The Academy announces 'Zootopia 2' is among 35 films eligible for the animated feature category at the 98th Academy Awards due to its qualifying theatrical run.</div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2025-11-23</div>
+                    <div class="timeline-event">Box Office Momentum Continues</div>
+                    <div class="timeline-description">Following the success of 'Wicked: For Good,' industry reports confirm 'Zootopia 2' is poised to enter a strong holiday market and potentially contribute to surpassing $9 billion in annual box office revenue.</div>
+                </div>
+                
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📰 Source Articles</h2>
+            <div class="articles-grid">
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://www.cnn.com/2025/11/15/politics/visitors-flock-to-national-zoo-reopening" target="_blank">Smithsonian museums, National Zoo reopenings bring flocks of visitors</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-15
+                            
+                        </span>
+                        <span>Source: CNN</span>
+                    </div>
+                    <div class="article-content">
+                        Smithsonian museums and the National Zoo are welcoming members of the public back after weeks of closures because of the government shutdown. The Smithsonian Institution, which receives federal fundin...
+                    </div>
+                    
+                        <a href="https://www.cnn.com/2025/11/15/politics/visitors-flock-to-national-zoo-reopening" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://www.cnn.com/2025/10/12/politics/smithsonians-close-government-shutdown" target="_blank">Smithsonian museums, National Zoo close as government shutdown drags on</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-10-12
+                            
+                        </span>
+                        <span>Source: CNN</span>
+                    </div>
+                    <div class="article-content">
+                        Smithsonian museums and the National Zoo shut their doors Sunday as thegovernment shutdownenters its third week, the Smithsonian Institution posted on its website. The Smithsonian Institute’s 19 museu...
+                    </div>
+                    
+                        <a href="https://www.cnn.com/2025/10/12/politics/smithsonians-close-government-shutdown" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://www.cnn.com/2025/08/04/europe/denmark-aalborg-zoo-pets-predators-intl-hnk" target="_blank">Denmark zoo asks people to donate unwanted pets to feed predators and imitate ‘natural food chain’</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-08-05
+                            
+                        </span>
+                        <span>Source: CNN</span>
+                    </div>
+                    <div class="article-content">
+                        A zoo in northern Denmark is asking pet owners to donate their unwanted guinea pigs, rabbits, chickens and even small horses – not to put them on display but to feed them to the zoo’s predators. The A...
+                    </div>
+                    
+                        <a href="https://www.cnn.com/2025/08/04/europe/denmark-aalborg-zoo-pets-predators-intl-hnk" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://www.cnn.com/2025/07/29/europe/german-zoo-baboon-euthanize-nuremberg-latam-intl" target="_blank">German zoo kills 12 baboons that it didn’t have enough space to house, despite protests</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-07-29
+                            
+                        </span>
+                        <span>Source: CNN</span>
+                    </div>
+                    <div class="article-content">
+                        BERLIN (AP)— A zoo in the German city of Nuremberg said it killed 12 baboons on Tuesday despite protests, capping a saga rooted in concerns that the zoo had too little space to house a growing group o...
+                    </div>
+                    
+                        <a href="https://www.cnn.com/2025/07/29/europe/german-zoo-baboon-euthanize-nuremberg-latam-intl" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/russia-ukraine-war-talks-geneva-peace-2dbc213db5f0b5972597c45c7401870f" target="_blank">Ukraine peace talks</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-23
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        GENEVA (AP) — Top U.S. and Ukrainian officials said Sunday they’d made progress toward ending theRussia-Ukraine warbut provided scant details after discussing theAmerican proposalto achieve peace that...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/russia-ukraine-war-talks-geneva-peace-2dbc213db5f0b5972597c45c7401870f" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/stabbing-wisconsin-slender-man-missing-83aff54d858dc3a5ca90006686893643" target="_blank">Morgan Geyser</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-23
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        MADISON, Wis. (AP) — A Wisconsin woman who admitted to nearlystabbing a classmate to deathat age 12 to please the online horror character Slender Man is missing after she cut off an electronic monitor...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/stabbing-wisconsin-slender-man-missing-83aff54d858dc3a5ca90006686893643" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/indianapolis-colts-kansas-city-chiefs-score-5e1d756cc0fd4ecd60b2ee8ac061c833" target="_blank">Chiefs beat Colts</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-23
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        KANSAS CITY, Mo. (AP) — The Kansas City Chiefs looked much like they have all season for the first three quarters against Indianapolis on Sunday. Their offense was stuck in a rut, penalties were pilin...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/indianapolis-colts-kansas-city-chiefs-score-5e1d756cc0fd4ecd60b2ee8ac061c833" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/ap-top-25-college-football-fc23c61177142c895619497c0414a9d2" target="_blank">AP Top 25</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-23
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        Follow live updates on theAP Top 25 poll. Get theAP Top 25 college football polldelivered straight to your inbox every week with AP Top 25 Poll Alerts.Sign up here. Oregon returned to the top five ofT...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/ap-top-25-college-football-fc23c61177142c895619497c0414a9d2" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/donald-glover-stroke-ba19ef86d53deccb8547cc796d1f3541" target="_blank">Donald Glover</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-23
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        Donald Glover is opening up about a recent health scare that forced him tocancel his tour last year. At the time, he described it as an “ailment,” but Glover said Saturday night at a performance that ...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/donald-glover-stroke-ba19ef86d53deccb8547cc796d1f3541" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/kpop-demon-hunters-oscars-7e6a617b4196f1ad01bdf9342c664643" target="_blank">‘KPop Demon Hunters’ is officially eligible for the Oscars</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-21
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        “KPop Demon Hunters”is one step closer to another golden moment:The Oscars. The Netflix phenomenon is among 35 films features eligible for the animated feature film category at the 98th Academy Awards...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/kpop-demon-hunters-oscars-7e6a617b4196f1ad01bdf9342c664643" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/fall-movies-calendar-2025-42485a77ba512246fb0860566d3788bc" target="_blank">Fall Movie Guide: Here are the films coming out from September to Christmas</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-08-25
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        Daniel Craig’sBenoit Blanc is back. So are thestars of “Wicked”and the animals of “Zootopia.” Summer may be known as sequel season, but part twos, and threes, will play big roles this fall at the movi...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/fall-movies-calendar-2025-42485a77ba512246fb0860566d3788bc" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/box-office-4531362f0723978de9b1d67faba41806" target="_blank">‘Wicked: For Good’ is even more popular than the first, soaring to a $226 million global debut</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-23
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        Universal Pictures’two-part “Wicked” gamblecontinues to defy gravity at the box office. Just a year after part onebrought droves of audiencesto movie theaters around the country, even more people boug...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/box-office-4531362f0723978de9b1d67faba41806" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/running-man-box-office-a4264f7b4af55837f5bd5a7ea3d6a09c" target="_blank">‘Now You See Me 3’ races past ‘The Running Man’ at box office</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-16
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        It’s no magic trick: The third installment in the thieving magician “Now You See Me” series beat the high-profile action pic“The Running Man”at the North American box office this weekend. Lionsgate’s“...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/running-man-box-office-a4264f7b4af55837f5bd5a7ea3d6a09c" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+                <div class="article-card">
+                    <h3 class="article-title">
+                        <a href="https://apnews.com/article/box-office-predator-badlands-cdf57703df0ebb3e72a0309893cf5f6f" target="_blank">‘Predator: Badlands’ tops box office with $80 million worldwide</a>
+                    </h3>
+                    <div class="article-meta">
+                        <span class="publish-date">
+                            <span class="date-icon">📅</span>
+                            
+                                2025-11-09
+                            
+                        </span>
+                        <span>Source: AP News</span>
+                    </div>
+                    <div class="article-content">
+                        NEW YORK (AP) —“Predator: Badlands”led all films in North American theaters with a debut of $40 million, according to studio estimates Sunday, a better-than-expected result that slightly lifted the bo...
+                    </div>
+                    
+                        <a href="https://apnews.com/article/box-office-predator-badlands-cdf57703df0ebb3e72a0309893cf5f6f" class="read-more" target="_blank">Read Full Article</a>
+                    
+                </div>
+                
+            </div>
+        </section>
+
+        <footer>
+            <p>This page was automatically generated by News Summary System | Data Sources: Multiple News Media</p>
+        </footer>
+    </div>
+</body>
+</html>
